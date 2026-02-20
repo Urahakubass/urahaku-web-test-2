@@ -130,22 +130,25 @@ body {
 (function() {
 	var canvas = document.getElementById('canvas');
 	var opts = { passive: false };
-	var jsTS = 0, jsTE = 0, jsTC = 0;
+	var jsTS = 0, jsTE = 0, jsTC = 0, jsPD = 0;
 
 	var dbg = document.createElement('div');
 	dbg.id = 'js-touch-dbg';
 	dbg.style.cssText = 'position:fixed;top:0;right:0;z-index:99999;'
 		+ 'background:rgba(0,0,0,0.7);color:#0f0;font:14px monospace;'
 		+ 'padding:4px 8px;pointer-events:none;white-space:pre;';
-	dbg.textContent = 'JS: TS:0 TE:0 TC:0';
+	dbg.textContent = 'JS: TS:0 PD:0 TE:0 TC:0';
 	document.body.appendChild(dbg);
 
 	function updateDbg() {
-		dbg.textContent = 'JS: TS:' + jsTS + ' TE:' + jsTE + ' TC:' + jsTC;
+		dbg.textContent = 'JS: TS:' + jsTS + ' PD:' + jsPD + ' TE:' + jsTE + ' TC:' + jsTC;
 	}
 
+	canvas.addEventListener('pointerdown', function(e) {
+		if (e.pointerType === 'touch') { jsPD++; updateDbg(); }
+	});
+
 	canvas.addEventListener('touchstart', function(e) {
-		e.preventDefault();
 		jsTS += e.changedTouches.length;
 		updateDbg();
 	}, opts);
@@ -155,13 +158,11 @@ body {
 	}, opts);
 
 	canvas.addEventListener('touchend', function(e) {
-		e.preventDefault();
 		jsTE += e.changedTouches.length;
 		updateDbg();
 	}, opts);
 
 	canvas.addEventListener('touchcancel', function(e) {
-		e.preventDefault();
 		jsTC += e.changedTouches.length;
 		updateDbg();
 	}, opts);
@@ -175,7 +176,7 @@ body {
 })();
 </script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":11605572,"index.wasm":36145869},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":11605492,"index.wasm":36145869},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
